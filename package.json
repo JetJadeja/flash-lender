@@ -1,0 +1,26 @@
+{
+  "name": "flash-lender",
+  "version": "1.0.0",
+  "description": "Flash Loan Smart Contracts",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JetDeveloping/flash-lender.git"
+  },
+  "keywords": [
+    "ethereum",
+    "defi"
+  ],
+  "author": "Jet Jadeja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JetDeveloping/flash-lender/issues"
+  },
+  "homepage": "https://github.com/JetDeveloping/flash-lender#readme"
+}
