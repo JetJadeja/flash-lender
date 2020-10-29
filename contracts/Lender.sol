@@ -32,9 +32,8 @@ contract Lender is Ownable, ReentrancyGuard{
     */
     modifier isReturned(address token, uint256 amount) {
         uint256 balance = supplier.supplyOf(token); // The Balance of the Supplier
-        uint256 finalFee; //The final fee, based on the amount
         _;
-        require(supplier.supplyOf(token) >= balance.add(finalFee)); //Ensure that the Borrower returned the money
+        require(supplier.supplyOf(token) >= balance); //Ensure that the Borrower returned the money
     }
 
     constructor(address _supplier, uint256 _fee) public {
@@ -65,7 +64,7 @@ contract Lender is Ownable, ReentrancyGuard{
     */
     function loan(address token, uint256 amount) external isReturned(token, amount) returns(bool) {
         supplier.lendTo(token, msg.sender, amount);
-        return Borrower(msg.sender).borrow(token, amount);
+        return Borrower(msg.sender).borrow(token, address(supplier), amount);
     }
 
 }
