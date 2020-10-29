@@ -9,6 +9,6 @@ pragma solidity ^0.5.0;
 
 interface Supplier {
     function supplyOf(address token) external returns (uint256);
-    function lendTo(address token, address toBorrower, uint256 amount) external;
+    function lendTo(address token, address to, uint256 amount) external;
     function repay(address token, uint256 amount) external;
 }
