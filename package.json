@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/JetDeveloping/flash-lender/issues"
   },
-  "homepage": "https://github.com/JetDeveloping/flash-lender#readme"
+  "homepage": "https://github.com/JetDeveloping/flash-lender#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^2.5.1"
+  }
 }
