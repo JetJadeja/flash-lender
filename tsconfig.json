@@ -7,6 +7,12 @@
       "esModuleInterop": true,
       "types": ["@types/node", "@types/chai", "@types/mocha"],
       "typeRoots": ["./node_modules/@types", "./types"]
-    }
+    },
+    "include": ["test/*.ts"],
+    "exclude": ["node_modules", "build", "cache", "artifacts"],
 
-}
+    "scripts": {
+        "generate-types": "npx typechain --target=truffle-v5 'build/contracts/*.json'",
+        "postinstall": "npx truffle compile && npm run generate-types"
+    }
+  }
