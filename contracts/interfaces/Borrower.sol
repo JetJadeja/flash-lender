@@ -8,5 +8,5 @@ pragma solidity ^0.5.0;
 */
 
 interface Borrower {
-    function borrow(address token, uint256 amount) external returns (bool);
+    function borrow(address token, address supplier, uint256 amount) external returns (bool);
 }
