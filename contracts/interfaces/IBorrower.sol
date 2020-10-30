@@ -7,6 +7,6 @@ pragma solidity ^0.5.0;
 @notice Contracts that inherit from this interface are used by the Borrower of the Flash Loan. 
 */
 
-interface Borrower {
-    function borrow(address token, address supplier, uint256 amount) external returns (bool);
+interface IBorrower {
+    function borrow(address token, uint256 amount) external returns (bool);
 }
