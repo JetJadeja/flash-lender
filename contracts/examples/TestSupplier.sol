@@ -4,7 +4,7 @@ import "../interfaces/Supplier.sol";
 import "@openzeppelin/contracts/token/erc20/ERC20.sol";
 
 
-contract Bank is Supplier {
+contract ExampleBank is Supplier {
         
     function supplyOf(address token) external returns(uint256) {
         return ERC20(token).balanceOf(address(this));
