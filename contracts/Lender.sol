@@ -57,7 +57,7 @@ contract Lender is Ownable, ReentrancyGuard{
         fee = _fee;
     }
 
-    function balanceOf(address token) public returns(uint256) {
+    function balanceOf(address token) public view returns(uint256) {
         return IERC20(token).balanceOf(address(this));
     }
 
