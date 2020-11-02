@@ -31,6 +31,10 @@ contract Lender is Ownable, ReentrancyGuard{
     ///@dev The amount of money that each user owes
     mapping(address => Owed) internal principal;
 
+
+    event loanedTo(address indexed _to, uint256 _amount);
+    event repaid(address indexed _from, uint256 _amount);
+
     /**
     @dev Confirms that the Supplier has sufficient funds and enforce the token is payed back (with the calculated fee)
     @param token The ERC20 Token Address
@@ -45,7 +49,7 @@ contract Lender is Ownable, ReentrancyGuard{
 
     }
 
-    constructor(uint256 _fee) public {
+    constructor(uint256 _fee) Ownable() public {
         fee = _fee;
     }
 
@@ -67,6 +71,8 @@ contract Lender is Ownable, ReentrancyGuard{
     @param amount The amount being borrowed
     */
     function loan(address token, uint256 amount) external isReturned(token, msg.sender, amount) returns(bool) { 
+        emit loanedTo(msg.sender, amount);
+        
         IERC20(token).transfer(msg.sender, amount);
         return IBorrower(msg.sender).borrow(token, amount);
     }
@@ -74,7 +80,7 @@ contract Lender is Ownable, ReentrancyGuard{
     /**
     @dev Repay tokens lended to the borrower
     */
-    function repay() external{
+    function repayTokens() external{
         IERC20(principal[msg.sender].token).safeTransferFrom
         (
             msg.sender, 
@@ -82,6 +88,7 @@ contract Lender is Ownable, ReentrancyGuard{
             principal[msg.sender].amount
         );
 
+        emit repaid(msg.sender, principal[msg.sender].amount);
         delete principal[msg.sender];
     }
 
