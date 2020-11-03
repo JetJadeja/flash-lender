@@ -3,7 +3,7 @@ const ExampleBorrower = artifacts.require("ExampleBorrower");
 const ExampleToken = artifacts.require("ExampleToken");
 
 module.exports = function(deployer, network) {
-    if (network == "test") { //If we are testing, deploy example contracts
+    if (network == "test" || "live") { //If we are testing, deploy example contracts
         deployer.deploy(ExampleBorrower);
         deployer.deploy(Lender, 0).then(function() {;
             return deployer.deploy(ExampleToken, Lender.address);
