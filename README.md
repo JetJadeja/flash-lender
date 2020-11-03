@@ -9,6 +9,12 @@ There are two main contracts that this system uses. The `Lender` and `Borrower`.
 
 `Borrower` contracts must inherit from the `IBorrower` interface. The `Lender` contract will then call the `Borrower.borrow()` function. To repay, the borrower must run the `Lender.repayTokens()` function.
 
+### Tests
+To test, you can run: `npx truffle test`. This will run the JS Tests within the test directory. 
+
+### Migrations
+To migrate, you can run: `npx truffle migrate <network>`. If you do not choose a network, it will deploy to the default one in `truffle-config.js`
+
 
 
 
