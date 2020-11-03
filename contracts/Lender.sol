@@ -38,14 +38,17 @@ contract Lender is Ownable, ReentrancyGuard{
     /**
     @dev Confirms that the Supplier has sufficient funds and enforce the token is payed back (with the calculated fee)
     @param token The ERC20 Token Address
+    @param borrower The address of the borrower 
     @param amount The amount being borrowed
     */
     modifier isReturned(address token, address borrower, uint256 amount) {
+        require(balanceOf(token) > amount, "Requested amount too large"); // Cannot borrow more than the available supply
 
-        require(balanceOf(token)/2 > amount); // Cannot borrow more than half of supply
-        principal[borrower] = Owed(token, amount);
+        uint256 totalPrincipal = calculateTotal(amount);
+        require(totalPrincipal > amount || fee == 0, "Requested amount is not sufficient");
+        principal[borrower] = Owed(token, totalPrincipal); // Set the Principal
         _;
-        require(principal[borrower].amount == 0);
+        require(principal[borrower].amount == 0, "Did not repay"); // After the function is called, ensure the borrower has repaid!
 
     }
 
@@ -65,12 +68,17 @@ contract Lender is Ownable, ReentrancyGuard{
         return IERC20(token).balanceOf(address(this));
     }
 
+    ///@dev Calculate the total amount that must be repaid by the borrower (including fees)
+    function calculateTotal(uint256 amount) internal view returns(uint256) {
+        return amount.add(amount.mul(fee).div(100));
+    }
+
     /**
     @dev Lend money to the Borrower
     @param token The ERC20 Token Address
     @param amount The amount being borrowed
     */
-    function loan(address token, uint256 amount) external isReturned(token, msg.sender, amount) returns(bool) { 
+    function loan(address token, uint256 amount) external isReturned(token, msg.sender, amount) nonReentrant returns(bool) { 
         emit loanedTo(msg.sender, amount);
         
         IERC20(token).transfer(msg.sender, amount);
@@ -78,10 +86,10 @@ contract Lender is Ownable, ReentrancyGuard{
     }
 
     /**
-    @dev Repay tokens lended to the borrower
+    @dev Repay the tokens lended to the borrower
     */
     function repayTokens() external{
-        IERC20(principal[msg.sender].token).safeTransferFrom
+        IERC20(principal[msg.sender].token).safeTransferFrom // Do a Safe Transfer that will revert if not paid
         (
             msg.sender, 
             address(this), 
@@ -89,7 +97,7 @@ contract Lender is Ownable, ReentrancyGuard{
         );
 
         emit repaid(msg.sender, principal[msg.sender].amount);
-        delete principal[msg.sender];
+        delete principal[msg.sender]; // Set principal values to 0
     }
 
 }

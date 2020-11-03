@@ -17,36 +17,56 @@ contract("Lender", accounts => {
     const [owner, borrower] = accounts;
 
     beforeEach(async () => { //beforeEach is run before every test
-        lender = await Lender.deployed(0, {from: owner}); //Deploy a new instance of lender
+        lender = await Lender.deployed(4, {from: owner}); //Deploy a new instance of lender
         token = await Token.deployed(lender.address, {from: owner}); //Deploy a new instance of Token
-    });
-
-    it("should revert if the borrower does not repay", async () => {
-        /**
-         * Call the Lender.loan function to borrow 10 units of our "ExampleToken". 
-         * However, since "Borrower" cannot repay the money within the same Transaction, the code should revert.
-         */
-        await lender
-            .loan(token.address, 10, {from: borrower})
-            .should.be.rejectedWith('revert');
     });
 
     it("should allow the owner to set the fee", async () => {
         /**
-         * Call the Lender.setFee function and change the fee so that it is equal to 1
+         * Call the Lender.setFee method and change the fee so that it is equal to 1
          */
         await lender
             .setFee(1, {from: owner}) //Sent from owner
-            .should.not.be.rejectedWith('revert');
+            .should.not.be.rejectedWith("revert");
     });
 
-    it("should revert if someone tries to set the fee", async() => {
+    it("should revert if the address setting the fee isn't an owner", async() => {
         /**
-         * Call the lender.setFee function, but, from a random address that isn't the owner. 
+         * Call the lender.setFee method, but, from an address that isn't permitted to set the fee. 
          * Since we only want the owner to modify the fee, this code should revert.
          */
         await lender
             .setFee(2, {from: borrower}) //Sent from borrower (not an owner)
-            .should.be.rejectedWith('revert');
+            .should.be.rejectedWith("revert");
     });
+
+    it("should revert if the borrowed amount is too great", async() => {
+        /**
+         * Call the lender.loan() method, but, set the amount parameter to a value that is too great.
+         */
+        await lender
+            .loan(token.address, 100000)
+            .should.be.rejectedWith("revert Requested amount too large");
+    });
+
+    it("should revert if the borrowed amount is not sufficient", async() => {
+        /**
+         * Call the lender.loan() method, but, set the amount parameter to a value that is too small.
+         * This would result in 0 fees, so we must prevent this
+         */
+        await lender
+            .loan(token.address, 10)
+            .should.be.rejectedWith("revert Requested amount is not sufficient");
+    });
+
+    it("should allow small loans, if the fee is 0", async() => {
+        /**
+         * If we set the fee to 0, we should be allowed to take loans of any size (that isn't larger than the total supply).
+         */
+        await lender.setFee(0, {from: owner}); // Set the fee to 0
+        await lender
+            .loan(token.address, 10) //Take a small Flash Loan
+            .should.not.be.rejectedWith("revert Requested amount is not sufficient");
+    });
+
 });
