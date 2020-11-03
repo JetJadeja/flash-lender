@@ -1,4 +1,4 @@
-// Ensure that the Transaction is cancelled if not repaid. 
+// Tests for the "Lender" Contract that lends ERC20 tokens to borrowers (via Flash Loans)
 
 const chai = require("chai");
 const chaiAsPromised = require("chai-as-promised");
