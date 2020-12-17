@@ -18,6 +18,9 @@ contract LendingPool is Ownable{
     ///@dev The address of the Flash Lender contract
     address public flashLenderContract;
 
+    ///@dev 
+    mapping(address => uint256) public beebs;
+
     constructor(address _flashLenderContract) public {
         flashLenderContract = _flashLenderContract;
     }
@@ -26,7 +29,5 @@ contract LendingPool is Ownable{
     function setNewFlashLender(address _flashLenderContract) public onlyOwner {
         flashLenderContract = _flashLenderContract;
     }
-
-    
 
 }
