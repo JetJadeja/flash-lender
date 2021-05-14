@@ -10,6 +10,7 @@ import {IBorrower} from "./interfaces/IBorrower.sol";
 /* Contracts */
 import {LenderStorage} from "./lender/LenderStorage.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/Initializable.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /* Libraries */
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
@@ -20,7 +21,7 @@ import {SafeMath} from "@openzeppelin/contracts/math/SafeMath.sol";
     @author Jet Jadeja <jet@rari.capital>
     @dev Lends flash loans
 */
-contract FlashLender is LenderStorage, IFlashLender, Initializable {
+contract FlashLender is LenderStorage, Ownable, Initializable, IFlashLender {
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
 
@@ -48,7 +49,6 @@ contract FlashLender is LenderStorage, IFlashLender, Initializable {
     /********************
      * External Functions *
      ********************/
-
     /** @dev Initiate a Flash Loan */
     function borrow(
         address token,
@@ -59,5 +59,15 @@ contract FlashLender is LenderStorage, IFlashLender, Initializable {
         IERC20(token).safeTransfer(to, amount);
 
         IBorrower(to).execute(token, amount);
+    }
+
+    /** @dev Set a new supplier address */
+    function setSupplier(address _supplier) external onlyOwner {
+        supplier = _supplier;
+    }
+
+    /** @dev Set a new fee factor */
+    function setFeeFactor(uint256 _feeFactor) external onlyOwner {
+        feeFactor = _feeFactor;
     }
 }
