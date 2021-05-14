@@ -1,12 +1,6 @@
 # flash-lender
 
----
-
-**NOTE**
-
-This was my first Solidity project. In early May, I decided to rewrite it, however it is currently unfinished.
-
----
+> **_NOTE:_** This was my first Solidity project. In early May, I decided to rewrite it, however it is currently unfinished.
 
 ERC20 Flash Loan Smart Contracts written in Solidity for Ethereum.
 
