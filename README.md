@@ -6,7 +6,7 @@ ERC20 Flash Loan Smart Contracts written in Solidity for Ethereum.
 
 ## What are Flash Loans?
 
-A Flash Loan is a type of loan, but with a catch: they are only valid within one transaction. This means that, when you use a Flash Loan, you borrow, use, and return the money within the same transaction! The best part is that if you can't repay the money, the transaction reverts, never actually going through.
+A flash loan is a type of uncollateralized loan that utilizes smart contracts and blockchain technology and allows users to borrow large sums of money without any consequences. However, flash loans are only valid within a single transaction, which means that you must borrow and return funds within the same transaction, otherwise the transaction fails. However, as a result of this, the usecases for flash loans are completely different than that of other types of loans. Flash loans are more commonly used for arbitration, collateral swaps, and more recently to hack DeFi protocols. 
 
 ## How does it work?
 
