@@ -1,0 +1,21 @@
+{
+  "[javascript, typescript]": {
+    "prettier.useTabs": true,
+    "prettier.tabWidth": 2,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true
+  },
+  "overrides": [
+    {
+      "files": ["contracts/**/*.sol"],
+      "options": {
+        "printWidth": 90,
+        "tabWidth": 4,
+        "useTabs": false,
+        "singleQuote": false,
+        "bracketSpacing": false,
+        "explicitTypes": "always"
+      }
+    }
+  ]
+}

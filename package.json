@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/JetJadeja/flash-lender#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.1.0",
+    "@openzeppelin/contracts": "^3.4.0",
     "hardhat": "^2.2.1"
   },
   "devDependencies": {
